@@ -5,7 +5,7 @@
 %%% i.e., dyn_halfsets_by_region(table_file);
 %%% and outputs halfsets files as:
 %%%     'table_file_half_1.tbl'
-%%%     'table_fule_half_2.tbl'
+%%%     'table_file_half_2.tbl'
 %%%
 %%% It will also return the halfsets as workspace variables
 %%% i.e., [half_table_one, half_table_two] = dyn_halfsets_by_region(table_file)
@@ -15,7 +15,7 @@ function [table_half_one,table_half_two] = dyn_halfsets_by_region(table_file)
 
 % Check inputs
 if nargin ~= 1
-    error('half_sets_by_region(): takes 1 required inputs')
+    error('half_sets_by_region(): takes 1 required input')
 end
 
 % Read in table file using dynamo if it exists
