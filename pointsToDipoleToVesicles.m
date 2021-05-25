@@ -1,4 +1,4 @@
-%%% This function converts a contour-labelled pairs of XYZ coordinates into vesicle
+.tbl%%% This function converts a contour-labelled pairs of XYZ coordinates into vesicle
 %%% cropping model for Dynamo.
 %%%
 %%%%%% At minimum, it requires the target catalogue name.

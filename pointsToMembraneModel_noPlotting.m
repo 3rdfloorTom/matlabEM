@@ -17,7 +17,7 @@
 %%% tomogram. 
 %%%
 %%% Author: TL (UCSD 2020)
-function [totalCrop] = pointsToMembraneModel(catalogueName, controlInterval, meshParameter)
+function [totalCrop] = pointsToMembraneModel_noPlotting(catalogueName, controlInterval, meshParameter)
 
 % Check user inputs
 if nargin > 3
@@ -50,13 +50,6 @@ centerFiles = dir(fullfile(imodDir,'*_center.txt'));
 
 % Get number of models
 N = length(pointsFiles);
-% Number of columns and rows for sub-ploting
-spCol = 4;
-spRows = ceil(N/spCol);
-
-% Create a figure
-figure(1);
-clf;
 
 % Read catalogue
 catCall = sprintf('%s.ctlg', catalogueName);
@@ -131,27 +124,6 @@ for i = 1:N
    
     fprintf('Finished and saved %s to catalogue\n', modelName)
     
-   % Plotting each surface on a subplot
-    h = subplot(spRows,spCol,i);
-    
-    %m.plotMesh(h,'refresh',false,'hold_limits',false);
-    m.plotSurface(h,'refresh',false,'hold_limits',false);
-    m.plotTablePoints(h,'refresh',false,'hold_limits',false);
-    m.plotTableSketch(h,'refresh',false,'hold_limits',false);
-    
-    % name each subplot by the model
-    t = sprintf('Vol-%d surface-%d', vIdx,mIdx);
-    title(t);
-    
-    % switch to axis(h, 'equal') if the 3D graphs look too funny
-    %view([1,-1,1]);
-    box on;
-    axis equal;
-    
-    
-    % update plot
-    drawnow;
-    
     % Extract cropping table
     tm{counter} = m.grepTable();
     tm{counter} (:,13) = dynCat.volumes{vIdx}.ftype;
@@ -165,8 +137,6 @@ end
 
 % Merge cropping tables
 totalCrop = dynamo_table_merge(tm,'linear_tags',1);
-
-set(gcf,'Name','Surface Cropping Models');
 
 fprintf('Converted all files to membraneByLevel models for cropping!\n')
 fprintf('Control point interval used: %d \n', controlInterval)
