@@ -11,7 +11,7 @@
 %%% i.e., [half_table_one, half_table_two] = dyn_halfsets_by_region(table_file)
 %%%
 %%% Author: TL (UCSD 2021)
-function [table_half_one,table_half_two] = dyn_halfsets_by_region(table_file)
+function [table_half_one,table_half_two] = dyn_halfsets_across_region(table_file)
 
 % Check inputs
 if nargin ~= 1

@@ -44,8 +44,8 @@ fprintf('*****Select IMOD coordinates directory in dialogue window*****\n\n\n')
 imodDir = uigetdir('Select IMOD coordinates directory');
 
 % Get requisite files into a struct
-pointsFiles = dir(fullfile(imodDir,'*_points.txt'));
-centerFiles = dir(fullfile(imodDir,'*_center.txt'));
+pointsFiles = dir(fullfile(imodDir,'*_points.xyz'));
+centerFiles = dir(fullfile(imodDir,'*_center.xyz'));
 
 
 % Get number of models

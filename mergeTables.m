@@ -1,6 +1,6 @@
 %%% Merge all Dynamo table files from within a user-specified directory
 %%% Usage mergeTables();
-function [mergedTbl] = mergeTables()
+function [merged_table] = mergeTables()
 
 % Have user open directory
 fprintf('*****Select directory containing .tbl files in dialogue window*****\n\n\n')
@@ -12,8 +12,8 @@ tblFiles = dir(fullfile(tblDir,'*.tbl'));
 % Get number of tables
 N = length(tblFiles);
 
-% Pre-allocate table holding cell-array for speed
-tm = cell(1,N);
+% Initialize an empty array for new table
+merged_table = [];
 
 for i = 1:N
     
@@ -21,14 +21,12 @@ for i = 1:N
     tblFileName = tblFiles(i).name;
     FulltblFileName = fullfile(tblDir, tblFileName);
     
-    tm{i} = dread(FulltblFileName); 
+    tmp_table = dread(FulltblFileName); 
+    merged_table = cat(1,merged_table,tmp_table);
     
 end
 
-% Merge cropping tables
-mergedTbl = dynamo_table_merge(tm,'linear_tags',1);
-
-pctlCount = size(mergedTbl,1);
+pctlCount = size(merged_table,1);
 
 fprintf('\nFinished merging %d tables!\n', N);
 fprintf('Newly merged table contains %d particles.\n\n', pctlCount);
