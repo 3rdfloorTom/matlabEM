@@ -1,4 +1,4 @@
-.tbl%%% This function converts a contour-labelled pairs of XYZ coordinates into vesicle
+%%% This function converts a contour-labelled pairs of XYZ coordinates into vesicle
 %%% cropping model for Dynamo.
 %%%
 %%%%%% At minimum, it requires the target catalogue name.
@@ -16,27 +16,7 @@
 %%% tomogram. 
 %%%
 %%% Author: TL (UCSD 2021)
-function [totalCrop] = pointsToDipoleToVesicles(catalogueName, separation, surfaceOffset)
-
-% Check user inputs
-if nargin > 3
-    error('pointsToDipoleToVesicles(): Too many inputs, takes 3 at most')
-end
-
-if ~exist(catalogueName, 'dir')
-    error('Could not find specified catalogue, make sure path is correct')
-end
-
-% Fill optional inputs with default values
-switch nargin
-    case 1
-        separation = 20;
-        surfaceOffset = 0;
-    case 2
-        
-        surfaceOffset = 0;
-end
-
+function [totalCrop] = pointsToDipole(catalogueName)
 
 % Have user open directory
 fprintf('*****Select IMOD coordinates directory in dialogue window*****\n\n\n')
@@ -59,8 +39,7 @@ clf;
 catCall = sprintf('%s.ctlg', catalogueName);
 dynCat = dread(catCall);
 
-% loop through dipole files
-objectCounter = 1; % Contour for object column 21 of table
+
 for i = 1:N
     
     % Parse file names for ease later and for indicies
@@ -82,73 +61,30 @@ for i = 1:N
     unique_contours = unique(dipole_points(:,1),'rows');
     n_dipoles = length(unique_contours);
     
-    % loop through dipoles
-    for j = 1:n_dipoles
-        
-        % Initialize a dynanmo vesicle model
-        m = dmodels.vesicle();
-        
-        % Get index of point pairs (parse by contour)
-        dipole_index = dipole_points(:,1) == unique_contours(j);
-        
-        % Get point pair
-        dipole_pair = dipole_points(dipole_index,:);
-        
-        % Set the center and radius of vesicle
-        m.center = dipole_pair(1,2:4);
-        m.radius = norm(dipole_pair(2,2:4) - dipole_pair(1,2:4));
-        
-        % Set user-input cropping conditions
-        m.separation = separation;
-        m.crop_distance_from_surface = surfaceOffset;
-        
-        % Update the cropping model
-        m.updateCrop();
-     
-        % Name the model for linking and saving to the catalogue
-        modelName = sprintf('vesicle_vol_%d_mod_%d', vIdx, objectCounter);
-        modelFileName = sprintf('%s.omd', modelName);
-        
-        m.name = modelName;
-        m.file = modelFileName;
+    dipoles = {};
     
-        m.linkCatalogue(catalogueName,'i',vIdx);
-        m.saveInCatalogue();
+    for j = 1:2:(n_dipoles*2)
         
-        % Add new cropping table to matrix for merging later
-        tm{objectCounter} = m.grepTable();
-        tm{objectCounter} (:,13) = dynCat.volumes{vIdx}.ftype;
-        tm{objectCounter} (:,14) = dynCat.volumes{vIdx}.ytilt(1);
-        tm{objectCounter} (:,15) = dynCat.volumes{vIdx}.ytilt(2);
-        tm{objectCounter} (:,20) = vIdx;	% volume index
-        tm{objectCounter} (:,21) = objectCounter; 
-    
-        % Increment object counter
-        objectCounter=objectCounter+1;
+        dp_m = dmodels.dipole();
         
-        fprintf('Finished and saved %s to catalogue\n', modelName)
+        dp_m.center = dipole_points(j, 2:4);
+        dp_m.north = dipole_points(j+1, 2:4);
         
-        % Attempt to plot the vesicles
-        h = subplot(spRows,spCol,j);
+        dipoles{(j+1)/2} = dp_m;
     
-        %m.plotMesh(h,'refresh',false,'hold_limits',false);
-        m.plotSurface(h,'refresh',false,'hold_limits',false);
-        m.plotTablePoints(h,'refresh',false,'hold_limits',false);
-        m.plotTableSketch(h,'refresh',false,'hold_limits',false);
-    
-        % name each subplot by the model
-        t = sprintf('Vol-%d surface-%d', vIdx,mIdx);
-        title(t);
-    
-        % switch to axis(h, 'equal') if the 3D graphs look too funny
-        %view([1,-1,1]);
-        box on;
-        axis equal;
-    
-        % update plot
-        drawnow;
     end
-
+    
+    dpS_m = dmodels.dipoleSet();
+    dpS_m.dipoles = dipoles;
+      
+    % Name the model
+    modelName = sprintf('dipoles_vol_%d',vIdx); 
+    modelFileName = sprintf('%s.omd', modelName);
+    dpS_m.name = modelName;
+    dpS_m.file = modelFileName;
+    
+    dpS_m.updateCrop();
+    
 end
 
 % Merge cropping tables
