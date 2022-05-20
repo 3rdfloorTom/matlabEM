@@ -2,10 +2,10 @@
 %%% cropping model (filamentWithTorsion) for Dynamo.
 %%%
 %%% At minimum, it requires the target catalogue name.
-%%% i.e., croppingTbl = pointsToPathFilament('catalogueName');
+%%% i.e., crop_table = pts_to_filament('catalogueName');
 %%%
 %%% At maximum, it takes the catalogue name, dz, dphi
-%%% i.e., croppingTbl = pointsToPathFilament('catalogueName', dz, dphi)
+%%% i.e., crop_table = pts_to_filament('catalogueName', dz, dphi)
 %%%         dz is the step between cropping points in pixels
 %%%         dphi is the change in rotation about the helical axis
 %%%
@@ -20,11 +20,11 @@
 %%% tomogram and the second '#' the filament number in that tomogram. 
 %%%
 %%% Author: (TL UCSD 2020)
-function [totalCrop] = pointsToPathFilament(catalogueName, dz, dphi)
+function [crop_table] = pts_to_filament(catalogueName, dz, dphi)
 
 % Check user inputs
 if nargin > 3
-    error('pointsToPathFilament(): Too many inputs, takes 3 at most')
+    error('pts_to_filament(): Too many inputs, takes 3 at most')
 end
 
 if ~exist(catalogueName, 'dir')
@@ -141,7 +141,11 @@ for i = 1:N
 end
 
 % Merge cropping tables
-totalCrop = dynamo_table_merge(tm, 'linear_tags', 1);
+crop_table = dynamo_table_merge(tm, 'linear_tags', 1);
+
+% Write out cropping table
+crop_table_name = sprintf('filament_dz%d_dphi%d.tbl', dz, dphi);
+dwrite(crop_table, crop_table_name);
 
 % Set figure name
 set(gcf,'Name','Path Filament Models');
@@ -151,3 +155,8 @@ fprintf('\n\nConverted all files to filamentWithTorsions models for cropping!\n'
 fprintf('Points cropped every: %d pixels \n', dz)
 
 fprintf('Succesive points rotated by : %d degrees \n', dphi)
+
+fprintf('Wrote out cropping table as: %s \n', crop_table_name)
+
+fprintf('Done!\n\n')
+
