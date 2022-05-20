@@ -2,8 +2,8 @@
 %%% and xyz coordinates) to make filamentRings models with variable diameters in dynamo.
 %%%
 %%% object entries represent filaments
-%%% contour 1 - represents the filament axis (>= 2 points)
-%%% contour 2 - rpresents the diameter (2 points
+%%% contour 1 - indicate the filament axis (>= 2 points)
+%%% contour 2 - indicate the diameter (2 points
 %%%
 %%% The file names should follow the convention
 %%% *_#_filamentRings.coords
@@ -12,14 +12,14 @@
 %%% tomogram.
 %%%
 %%% At minimum, it requires the target catalogue name.
-%%% i.e., crop_table =  points_to_variable_filamentRings('catalogue_name', ring_separation);
+%%% i.e., crop_table =  pts_to_variable_filamentRings('catalogue_name', ring_separation);
 %%%
 %%% Author: (TL UCSD 2022)
-function [crop_table] = points_to_variable_filamentRings(catalogue_name, ring_separation)
+function [crop_table] = pts_to_variable_filamentRings(catalogue_name, ring_separation)
 
 % Check user inputs
 if nargin ~= 2
-    error('points_to_variable_filamentRings(): Too many inputs, takes 2')
+    error('pts_to_variable_filamentRings(): Too many inputs, takes 2')
 end
 
 if ~exist(catalogue_name, 'dir')
