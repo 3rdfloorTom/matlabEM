@@ -1,6 +1,6 @@
 %%% Merge all Dynamo table files from within a user-specified directory
 %%% Usage mergeTables();
-function [merged_table] = mergeTables()
+function [merged_table] = merge_tables()
 
 % Have user open directory
 fprintf('*****Select directory containing .tbl files in dialogue window*****\n\n\n')
