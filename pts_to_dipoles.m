@@ -1,14 +1,8 @@
-%%% This function converts a contour-labelled pairs of XYZ coordinates into vesicle
-%%% cropping model for Dynamo.
+%%% This function converts pairs of XYZ coordinates into dipole model
+%%% cropping models for Dynamo.
 %%%
 %%%%%% At minimum, it requires the target catalogue name.
-%%% i.e., croppingTbl = pointsToDipole('catalogueName');
-%%%
-%%% At maximum, it takes the catalogue name, point separation, and distance
-%%% from surface for cropping
-%%% i.e., croppingTbl = pointsToDipoleToVesicles('catalogueName', separation, surfaceOffset)
-%%%
-%%%     separation, surfaceOffset takes units of pixels
+%%% i.e., crop_table = pts_to_dipoles('catalogueName');
 %%%
 %%% The file names should follow the convention
 %%% *_#_*dipoles.xyz
@@ -16,7 +10,7 @@
 %%% tomogram. 
 %%%
 %%% Author: TL (UCSD 2021)
-function [crop_table] = pointsToDipoles(catalogueName)
+function [crop_table] = pts_to_dipoles(catalogueName)
 
 % Have user open directory
 fprintf('*****Select IMOD coordinates directory in dialogue window*****\n\n\n')
