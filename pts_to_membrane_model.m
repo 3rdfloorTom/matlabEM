@@ -2,10 +2,10 @@
 %%% cropping model for Dynamo.
 %%%
 %%% At minimum, it requires the target catalogue name.
-%%% i.e., pointsToMembraneModel('catalogueName');
+%%% i.e., pts_to_membrane_model('catalogueName');
 %%%
 %%% It also accepts control point interval and mesh parameter as arguements
-%%% i.e., pointsToMembraneModel('catalogueName', 25, 5);
+%%% i.e., pts_to_membrane_model('catalogueName', 25, 5);
 %%% Otherwise it just uses default values.
 %%%
 %%% Upon running, a file explorer will open for the user to select the
@@ -17,11 +17,11 @@
 %%% tomogram. 
 %%%
 %%% Author: TL (UCSD 2020)
-function [totalCrop] = pointsToMembraneModel(catalogueName, controlInterval, meshParameter)
+function [crop_table] = pts_to_membrane_model(catalogueName, controlInterval, meshParameter)
 
 % Check user inputs
 if nargin > 3
-    error('pointsToMembraneModel(): Too many inputs, takes 3 at most')
+    error('pts_to_membrane_model(): Too many inputs, takes 3 at most')
 end
 
 if ~exist(catalogueName, 'dir')
@@ -164,12 +164,19 @@ for i = 1:N
 end
 
 % Merge cropping tables
-totalCrop = dynamo_table_merge(tm,'linear_tags',1);
+crop_table = dynamo_table_merge(tm,'linear_tags',1);
+
+% Write out cropping table
+crop_table_name = sprintf('memByLvls_i%d_m%d.tbl', controlInterval, meshParameter);
+dwrite(crop_table, crop_table_name);
 
 set(gcf,'Name','Surface Cropping Models');
 
 fprintf('Converted all files to membraneByLevel models for cropping!\n')
 fprintf('Control point interval used: %d \n', controlInterval)
 fprintf('Mesh spacing parameter used: %d \n', meshParameter)
+
+fprintf('Wrote out cropping table as: %s: \n', crop_table_name)
+fprintf('Done!\n\n')
 
 end
