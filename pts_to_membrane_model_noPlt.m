@@ -2,10 +2,10 @@
 %%% cropping model for Dynamo.
 %%%
 %%% At minimum, it requires the target catalogue name.
-%%% i.e., pointsToMembraneModel('catalogueName');
+%%% i.e., pts_to_membrane_model_noPlt('catalogueName');
 %%%
 %%% It also accepts control point interval and mesh parameter as arguements
-%%% i.e., pointsToMembraneModel('catalogueName', 25, 5);
+%%% i.e., pts_to_membrane_model_noPlt('catalogueName', 25, 5);
 %%% Otherwise it just uses default values.
 %%%
 %%% Upon running, a file explorer will open for the user to select the
@@ -17,7 +17,7 @@
 %%% tomogram. 
 %%%
 %%% Author: TL (UCSD 2020)
-function [totalCrop] = pointsToMembraneModel_noPlotting(catalogueName, controlInterval, meshParameter)
+function [crop_table] = pts_to_membrane_model_noPlt(catalogueName, controlInterval, meshParameter)
 
 % Check user inputs
 if nargin > 3
@@ -136,10 +136,17 @@ for i = 1:N
 end
 
 % Merge cropping tables
-totalCrop = dynamo_table_merge(tm,'linear_tags',1);
+crop_table = dynamo_table_merge(tm,'linear_tags',1);
+
+% Write out cropping table
+crop_table_name = sprintf('memByLvls_i%d_m%d.tbl', controlInterval, meshParameter);
+dwrite(crop_table,crop_table_name);
 
 fprintf('Converted all files to membraneByLevel models for cropping!\n')
 fprintf('Control point interval used: %d \n', controlInterval)
 fprintf('Mesh spacing parameter used: %d \n', meshParameter)
+
+fprintf('Wrote out cropping table as: %s \n', crop_table_name)
+fprintf('Done!! \n\n')
 
 end
