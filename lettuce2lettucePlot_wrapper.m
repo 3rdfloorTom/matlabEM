@@ -1,4 +1,4 @@
-% Wrapper to obtain lattice map with latticePlot functio stemming from a
+% Wrapper to obtain lattice map with latticePlot function stemming from a
 % mispronounciation of "lattice".
 %
 % Compute and plot all pairwise distances between 2 tables.

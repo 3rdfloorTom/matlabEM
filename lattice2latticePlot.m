@@ -1,4 +1,4 @@
-% Plot of lattice neighbours
+% Plot of lattice neighbours between two tables
 
 % Rationale: this can be a helpful tool to visualise the extent of order in lattice assemblies. This function iterates over every particle
 % to find neighbours within a certain distance range (dmax and dmin), calculate their relative orientation, and fill a lattice plot volume (dimensions
@@ -83,7 +83,7 @@ function [latticePlot,tags,pairs,table_select,table_exclude] = lattice2latticePl
                 z = td(j,26) - p(26);
                 
                 % rotate vector
-                rot = dynamo_euler2matrix(-[p(9),-p(8),-p(7)]);
+                rot = dynamo_euler2matrix([-p(9),-p(8),-p(7)]);
                 rotr = round(rot'*[x;y;z]);
                 rotr = rotr + ((plot_size/2) + 1); % vector w/r to volume centre
                 latticePlot(rotr(1),rotr(2),rotr(3)) =  latticePlot(rotr(1),rotr(2),rotr(3)) + 1;

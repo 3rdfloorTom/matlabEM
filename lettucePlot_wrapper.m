@@ -1,5 +1,5 @@
-% Wrapper to obtain lattice map with latticePlot functio stemming from a
-% mispronounciation of "lattice".
+% Wrapper to obtain lattice map with latticePlot function stemming from a
+% mispronounciation of "lattice" and the joy I get from calling it the "lettuce wrapper".
 %
 % NOTE: the latticePlot.m function must be in the current MATLAB path for
 % the wrapper to locate it.

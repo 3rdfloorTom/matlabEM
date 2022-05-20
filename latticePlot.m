@@ -1,5 +1,7 @@
 % Plot of lattice neighbours
 
+% Original script written by J. Hutchings
+
 % Rationale: this can be a helpful to visualise the extent of order in lattice assemblies. This function iterates over every particle
 % to find neighbours within a certain distance range (dmax and dmin), calculate their relative orientation, and fill a lattice plot volume (dimensions
 % specified by plot_size) to represent neighbouring particles for all particles in a dataset.
