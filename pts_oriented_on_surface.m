@@ -1,10 +1,15 @@
 %%% This function converts a series of XYZ coordinates
-%%% cropping model (filamentWithTorsion) for Dynamo.
+%%% cropping model for Dynamo.
+%%%
 %%% It orients them on previously written-out surface models (.omd)
-%%% That should already be saved in the catalogue
+%%% which should already be saved in the catalogue
+%%%
+%%% XYZ points for orienting are assumed to have the same volume and model indices 
+%%% as the saved surface to use for orienting.
+%%%
 %%%
 %%% At minimum, it requires the target catalogue name.
-%%% i.e., pointsOrientedOnSurface('catalogueName');
+%%% i.e., pts_oriented_on_surface('catalogueName');
 %%%
 %%%
 %%% The file names should follow the convention
@@ -13,12 +18,12 @@
 %%% tomogram and the second '#' the surface number. 
 %%%
 %%% Author: (TL UCSD 2020)
-function pointsOrientedOnSurface(catalogueName)
+function pts_oriented_on_surface(catalogueName)
 
 
 % Check user inputs
 if nargin > 1
-    error('pointsOrientedOnSurface(): Too many inputs, takes 1 at most')
+    error('pts_oriented_on_surface(): Too many inputs, takes 1 at most')
 end
 
 if ~exist(catalogueName, 'dir')
