@@ -1,6 +1,7 @@
 %%% Comment about usage
+%%% Plot a membrane-by-levels model file
 %%%
-function pltMemByLvlsCrops(modelFile)
+function plt_MemByLvls(modelFile)
 
 % Read in model
 m = dread(modelFile);
